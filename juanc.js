@@ -29,7 +29,7 @@ class Contenedor {
         }
 
         save = async obj => {
-            let productos = this.getAll();
+            let productos = await this.getAll();;
             try {
                 let newId;
                 productos.length === 0 ? newId = 1 : newId = productos[productos.length-1].id + 1;
@@ -42,14 +42,16 @@ class Contenedor {
             }
         }
 
-        getById = async id => {
-            let productos = await this.getAll();
-            try {
 
-                const obj = productos.find(id => productos.id === id);
-                return obj ? obj : null;
+
+        //llamamos a un id en particular
+        getById = async(number) =>{
+            let stock = await this.getAll();
+            try {
+                let filter = stock.find(e => e.id == number)
+                return filter
             } catch (error) {
-                console.log(`error: ${error}`);
+                console.log(error)
             }
         }
 
@@ -70,25 +72,33 @@ class Contenedor {
 
 const products = new Contenedor('products.txt')
 
+
+//Guardamos un producto
 const test = async () => {
     let save = await products.save({
-        title: 'Telefono',
+        title: 'Mouse',
         price: 423.56,
-        thumbnail: 'asd@gmail.com'
+       thumbnail: 'asd4@gmail.com'
     });
 
+    //Traemos todos los productos
+    //let getAll = await products.getAll();
+    //console.log(getAll);
 
-    let getAll = await products.getAll();
-    console.log(getAll);
 
-    let getById = await products.getById(5);
-    console.log(getById);
+    //Llamamos a un ID en particular
+    //let getById = await products.getById(2);
+    //console.log(getById);
 
-    let deleteById = await products.deleteById(2);
-    console.log(deleteById);
+    //Eliminamos un ID en particular
+    //let deleteById = await products.deleteById(2);
+    //console.log(deleteById);
 
-    let deleteAll = await products.deleteAll();
-    console.log(deleteAll);
+
+    //Borramos todos los productos
+    //let deleteAll = await products.deleteAll();
+    //console.log(deleteAll);
+
 };
 
 test ();
